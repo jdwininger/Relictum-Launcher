@@ -23,6 +23,12 @@ const Dashboard = ({ games, onGameSelect }) => {
           Seamlessly manage your clients, addons, and gameplay in one unified hub.
         </p>
 
+        <button className={styles.communityButton} onClick={handleJoinCommunity}>
+          <Users size={20} />
+          <span>Join Community</span>
+          <ExternalLink size={16} style={{ opacity: 0.7 }} />
+        </button>
+
         <div className={styles.supportedGamesPreview}>
           <div 
             className={styles.gameIconCard} 
