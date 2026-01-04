@@ -766,6 +766,19 @@ ipcMain.handle('install-addon', async (event, { gamePath, filePath }) => {
 
 // --- Warperia Addons Integration ---
 
+// Helper to safely strip HTML tags (mitigates CodeQL alert)
+function stripHtml(html) {
+    if (!html) return '';
+    let oldHtml;
+    do {
+        oldHtml = html;
+        // Regex to remove tags, ensuring we don't match across multiple tags incorrectly
+        // <[^<>]+> matches a '<' followed by one or more non-'<' non-'>' characters, then '>'
+        html = html.replace(/<[^<>]+>/g, '');
+    } while (html !== oldHtml);
+    return html.trim();
+}
+
 ipcMain.handle('fetch-warperia-addons', async (event, expansion) => {
     try {
         const headers = {
