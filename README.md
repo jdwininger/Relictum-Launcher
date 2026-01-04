@@ -32,7 +32,7 @@ It is the first private server launcher to feature **Advanced Integrity Verifica
 *   **Smart Grouping**: Automatically groups multi-module addons into single, clean entries.
 *   **Local Management**: Easily update or delete your existing addons.
 
-### � Immersive Experience
+### 🎨 Immersive Experience
 *   **Integrated Music Player**: Enjoy the iconic soundtracks while you browse.
 *   **Classic Layout**: A refined user interface that pays homage to the original game launcher while using modern glass-morphism effects.
 
@@ -95,9 +95,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4.  Push to the Branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
 
+<<<<<<< HEAD
 ## ⚠️ Disclaimer
 
 This project is an unofficial fan creation and is not affiliated with, endorsed, sponsored, or specifically approved by any official game studio. All trademarks are property of their respective owners.
+=======
+
+## ⚠️ Disclaimer
+
+This project is an unofficial fan creation and is not affiliated with, endorsed, sponsored, or specifically approved by Warmane or Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
+>>>>>>> b632c8f99d9ea8097d83f459e6ad7d2ded98e378
 
 ## 📄 License
 
