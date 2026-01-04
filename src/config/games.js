@@ -28,7 +28,6 @@ export const games = [
     clientIcon: classicIco,
     cardArt: classicArt,
     bg: 'https://images.alphacoders.com/109/1097880.jpg', // Classic BG
-    magnet: 'http://cdn.twinstar-wow.com/WoW_Vanilla.zip'
   },
   { 
     id: 'tbc', 
@@ -40,7 +39,6 @@ export const games = [
     clientIcon: tbcIco,
     cardArt: tbcArt,
     bg: 'https://images.alphacoders.com/603/603505.jpg', // TBC BG (Illidan Clean)
-    magnet: 'https://cdn.wowlibrary.com/clients/TBC-2.4.3.8606-enGB-Repack.zip'
   },
   { 
     id: 'wotlk', 
@@ -52,6 +50,5 @@ export const games = [
     clientIcon: wotlkIco,
     cardArt: wotlkArt,
     bg: 'https://images.alphacoders.com/694/69466.jpg', // WotLK BG
-    magnet: 'magnet:?xt=urn:btih:5B65D1928A3025A820B45E6DB2451AAAABC5347C&dn=World%20of%20Warcraft%203.3.5a&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce'
   }
 ];
