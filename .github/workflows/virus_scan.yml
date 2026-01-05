@@ -1,0 +1,21 @@
+name: Virus Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  virus_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Scan for Viruses (ClamAV)
+        uses: djdefi/gitavscan@main
+        with:
+          # Scan only current files (remove 'full' option for faster scan)
+          # To scan history too, use: full: '--full'
+          fail-action: true

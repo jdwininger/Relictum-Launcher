@@ -1,0 +1,35 @@
+name: Addons Security Scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0' # Run every Sunday at midnight
+
+jobs:
+  scan_addons:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install ClamAV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clamav clamav-daemon
+          sudo freshclam
+
+      - name: Download Addons
+        run: node scripts/download-addons-for-scan.js
+
+      - name: Run Virus Scan
+        run: |
+          # Scan the downloaded directory
+          # -r: recursive
+          # -i: only print infected files
+          # --bell: sound bell on virus detection
+          clamscan -r -i --bell temp_addons_scan
