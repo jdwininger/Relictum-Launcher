@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Play, Globe, FolderSearch } from 'lucide-react';
 import styles from './GameDetails.module.css';
 import ipcRenderer from '../../utils/ipc';
@@ -13,6 +14,7 @@ const GameDetails = ({
   onLocateGame,
   onForgetGame
 }) => {
+  const { t } = useTranslation();
   const [detectedVersion, setDetectedVersion] = useState(null);
   const [isVersionCompatible, setIsVersionCompatible] = useState(true);
 
@@ -94,12 +96,12 @@ const GameDetails = ({
                   disabled={isPlaying || !isVersionCompatible}
                 >
                   <Play size={24} fill="currentColor" /> 
-                  {!isVersionCompatible ? "WRONG VERSION" : (isPlaying ? "PLAYING" : "PLAY")}
+                  {!isVersionCompatible ? t('game_details.wrong_version') : (isPlaying ? t('game_details.playing') : t('game_details.play'))}
                 </button>
                 <button 
                   className={styles.iconBtnLarge} 
                   onClick={onConfigureRealmlist}
-                  title="Configure Realmlist"
+                  title={t('game_details.configure_realmlist')}
                 >
                   <Globe size={24} />
                 </button>
@@ -108,7 +110,7 @@ const GameDetails = ({
               <div className={styles.installSection}>
                 <div className={styles.installButtons}>
                   <button className={styles.locateButton} onClick={onLocateGame}>
-                    <FolderSearch size={16} /> Locate Existing Installation
+                    <FolderSearch size={16} /> {t('game_details.locate_game')}
                   </button>
                 </div>
               </div>
@@ -119,21 +121,21 @@ const GameDetails = ({
 
       <div className={styles.gameDetailsGrid}>
         <div className={styles.detailCard}>
-          <h4>Game Version</h4>
+          <h4>{t('game_details.game_version')}</h4>
           <p>{activeGame.version}</p>
           {detectedVersion && (
             <p className={!isVersionCompatible ? styles.errorText : ''} style={isVersionCompatible ? { fontSize: '0.8em', color: '#888', marginTop: '4px' } : { fontSize: '0.9em', marginTop: '4px' }}>
-              Detected: {detectedVersion} {!isVersionCompatible && '(Incompatible)'}
+              {t('game_details.detected_version', { version: detectedVersion })} {!isVersionCompatible && t('game_details.incompatible')}
             </p>
           )}
         </div>
         <div className={styles.detailCard}>
-          <h4>Installation Path</h4>
-          <p className={styles.pathText} title={currentPath || 'Not Installed'}>
-            {currentPath || 'Not Installed'}
+          <h4>{t('game_details.installation_path')}</h4>
+          <p className={styles.pathText} title={currentPath || t('game_details.not_installed')}>
+            {currentPath || t('game_details.not_installed')}
           </p>
           {currentPath && (
-            <button className={styles.removePathBtn} onClick={onForgetGame}>Remove</button>
+            <button className={styles.removePathBtn} onClick={onForgetGame}>{t('game_details.remove')}</button>
           )}
         </div>
       </div>

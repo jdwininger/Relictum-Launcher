@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import styles from './Dashboard.module.css';
 import { games } from '../../config/games';
 import ipcRenderer from '../../utils/ipc';
@@ -6,6 +7,8 @@ import { Users } from 'lucide-react';
 import titleImage from '../../assets/logo-new-white.png';
 
 const Dashboard = ({ games, onGameSelect }) => {
+  const { t } = useTranslation();
+
   // Helper: Retrieve game icon from configuration
   const getGameIcon = (id) => {
     const game = games.find(g => g.id === id);
@@ -25,13 +28,15 @@ const Dashboard = ({ games, onGameSelect }) => {
       <div className={styles.heroSection}>
         <img src={titleImage} alt="Relictum Logo" className={styles.titleImage} />
         <p className={styles.heroDescription}>
-          A modern, secure launcher built for gaming. <br/>
-          Manage multiple expansions, addons, and settings in one unified hub.
+          <Trans i18nKey="dashboard.hero_description">
+            A modern, secure launcher built for gaming. <br/>
+            Manage multiple expansions, addons, and settings in one unified hub.
+          </Trans>
         </p>
 
         <button className={styles.communityButton} onClick={handleJoinCommunity}>
           <Users className={styles.communityIcon} size={24} />
-          <span className={styles.communityText}>JOIN COMMUNITY</span>
+          <span className={styles.communityText}>{t('dashboard.join_community')}</span>
         </button>
 
         <div className={styles.supportedGamesPreview}>

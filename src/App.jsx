@@ -33,6 +33,7 @@ import { useAddons } from './hooks/useAddons';
 import wotlkTheme from './assets/music/wotlk-theme.mp3';
 
 function App() {
+  const { t } = useTranslation();
   // UI State
   const [activeView, setActiveView] = useState('dashboard'); // dashboard, game, addons, settings
   const [modalConfig, setModalConfig] = useState({
@@ -271,12 +272,12 @@ function App() {
     if (path) {
         try {
             await ipcRenderer.invoke('clear-game-cache', path);
-            showModal('Success', 'Cache cleared successfully!', <button className="modal-btn-primary" onClick={closeModal}>OK</button>);
+            showModal(t('modals.success'), t('modals.cache_cleared'), <button className="modal-btn-primary" onClick={closeModal}>{t('modals.ok')}</button>);
         } catch (e) {
-            showModal('Error', 'Failed to clear cache: ' + e.message, <button className="modal-btn-primary" onClick={closeModal}>OK</button>);
+            showModal(t('modals.error'), t('modals.cache_error') + ': ' + e.message, <button className="modal-btn-primary" onClick={closeModal}>{t('modals.ok')}</button>);
         }
     } else {
-        showModal('Error', 'Game path not found. Please locate the game first.', <button className="modal-btn-primary" onClick={closeModal}>OK</button>);
+        showModal(t('modals.error'), t('modals.locate_first'), <button className="modal-btn-primary" onClick={closeModal}>{t('modals.ok')}</button>);
     }
   };
 
@@ -504,22 +505,22 @@ function App() {
       <Modal
         isOpen={renameConfig.isOpen}
         onClose={() => setRenameConfig(prev => ({ ...prev, isOpen: false }))}
-        title="Rename Client"
+        title={t('modals.rename_client_title')}
         footer={
           <>
-             <button className="modal-btn-secondary" onClick={handleResetName}>Reset to Default</button>
-             <button className="modal-btn-primary" onClick={handleSaveRename}>Save Name</button>
+             <button className="modal-btn-secondary" onClick={handleResetName}>{t('modals.reset_default')}</button>
+             <button className="modal-btn-primary" onClick={handleSaveRename}>{t('modals.save_name')}</button>
           </>
         }
       >
         <div className="rename-game-form">
-           <p className="rename-desc">Enter a custom name for this client in the sidebar:</p>
+           <p className="rename-desc">{t('modals.rename_desc')}</p>
            <input 
               type="text" 
               className="modal-input"
               value={renameConfig.currentName}
               onChange={(e) => setRenameConfig(prev => ({ ...prev, currentName: e.target.value }))}
-              placeholder="Enter name..."
+              placeholder={t('modals.enter_name')}
               autoFocus
            />
         </div>

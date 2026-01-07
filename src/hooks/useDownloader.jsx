@@ -13,6 +13,7 @@ export const useDownloader = ({
     showModal,
     closeModal 
 }) => {
+    const { t } = useTranslation();
     const [downloadState, setDownloadState] = useState({
         isDownloading: false,
         gameId: null,
@@ -63,15 +64,15 @@ export const useDownloader = ({
 
             if (enableNotifications) {
                 if (Notification.permission === "granted") {
-                    new Notification('Download Complete', {
-                        body: 'World of Warcraft is ready to play!',
+                    new Notification(t('downloader.complete_title'), {
+                        body: t('downloader.complete_body'),
                         icon: azerothLogo
                     });
                 } else if (Notification.permission !== "denied") {
                     Notification.requestPermission().then(permission => {
                         if (permission === "granted") {
-                            new Notification('Download Complete', {
-                                body: 'World of Warcraft is ready to play!',
+                            new Notification(t('downloader.complete_title'), {
+                                body: t('downloader.complete_body'),
                                 icon: azerothLogo
                             });
                         }
@@ -80,7 +81,7 @@ export const useDownloader = ({
             }
 
             if (showModal) {
-                showModal('Download Complete', "Download Complete! You can now play.", <button className="modal-btn-primary" onClick={closeModal}>OK</button>);
+                showModal(t('downloader.complete_title'), t('downloader.complete_modal_body'), <button className="modal-btn-primary" onClick={closeModal}>{t('modals.ok')}</button>);
             }
         };
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { Plus, Puzzle, Search, Trash2, X, Info, Download, Check, Loader2 } from 'lucide-react';
 import styles from './AddonsView.module.css';
 
@@ -20,6 +21,7 @@ const AddonsView = ({
     selectedVersion,
     gameInstalled = false
 }) => {
+    const { t } = useTranslation();
     const [selectedAddon, setSelectedAddon] = useState(null);
 
     if (!activeGame) return <div className={styles.addonsView}>Error: Game data not found.</div>;
@@ -43,20 +45,20 @@ const AddonsView = ({
     return (
         <div className={styles.addonsView}>
             <div className={styles.viewHeader}>
-                <h2>Addons Manager - {activeGame.shortName}</h2>
+                <h2>{t('addons.title')} - {activeGame.shortName}</h2>
                 {gameInstalled && (
                     <div className={styles.addonTabs}>
                         <button 
                             className={`${styles.tabBtn} ${activeAddonTab === 'installed' ? styles.active : ''}`} 
                             onClick={() => setActiveAddonTab('installed')}
                         >
-                            Installed
+                            {t('addons.tabs.installed')}
                         </button>
                         <button 
                             className={`${styles.tabBtn} ${activeAddonTab === 'browse' ? styles.active : ''}`} 
                             onClick={() => setActiveAddonTab('browse')}
                         >
-                            Browse
+                            {t('addons.tabs.browse')}
                         </button>
                     </div>
                 )}
@@ -68,9 +70,13 @@ const AddonsView = ({
                         <Info size={48} color="#fb7185" />
                     </div>
                     <div className={styles.emptyStateContent}>
-                        <h3 className={styles.emptyStateTitle}>Client Not Found</h3>
+                        <h3 className={styles.emptyStateTitle}>{t('addons.client_not_found')}</h3>
                         <p className={styles.emptyStateDesc}>
-                            Please install or locate the <span style={{color: 'var(--primary-gold)'}}>{activeGame.name}</span> client to view and manage addons.
+                            <Trans 
+                                i18nKey="addons.client_not_found_desc" 
+                                values={{ game: activeGame.name }}
+                                components={{ 1: <span style={{color: 'var(--primary-gold)'}} /> }}
+                            />
                         </p>
                     </div>
                 </div>
@@ -83,13 +89,13 @@ const AddonsView = ({
                             disabled={!gameInstalled}
                             style={{opacity: !gameInstalled ? 0.5 : 1, cursor: !gameInstalled ? 'not-allowed' : 'pointer'}}
                         >
-                            <Plus size={16} /> Install from ZIP
+                            <Plus size={16} /> {t('addons.install_zip')}
                         </button>
-                        <span className={styles.addonCount}>{(groupedAddons || []).length} Addons</span>
+                        <span className={styles.addonCount}>{t('addons.count_addons', { count: (groupedAddons || []).length })}</span>
                     </div>
                     <div className={styles.addonsListContainer}>
                         {loadingAddons ? (
-                            <div className={styles.loadingState}>Loading addons...</div>
+                            <div className={styles.loadingState}>{t('addons.loading')}</div>
                         ) : (groupedAddons || []).length > 0 ? (
                             (groupedAddons || []).map((addon, idx) => (
                                 <div key={idx} className={styles.addonRow} onClick={() => openDetails(addon)}>
@@ -106,7 +112,7 @@ const AddonsView = ({
                                             {addon.author ? (
                                                  <div className={styles.addonAuthor}>by {addon.author}</div>
                                             ) : (
-                                                 <div className={styles.addonStatus}>Installed</div>
+                                                 <div className={styles.addonStatus}>{t('addons.tabs.installed')}</div>
                                             )}
                                         </div>
                                     </div>
@@ -122,20 +128,20 @@ const AddonsView = ({
                                             e.stopPropagation();
                                             openDetails(addon);
                                         }}>
-                                            <Info size={14} /> Details
+                                            <Info size={14} /> {t('addons.details')}
                                         </button>
                                         <button className={styles.deleteBtnSmall} onClick={(e) => {
                                             e.stopPropagation();
                                             const toDelete = [addon.folderName, ...(addon.modules || []).map(m => m.folderName)];
                                             handleDeleteAddon(toDelete);
                                         }}>
-                                            Uninstall
+                                            {t('addons.uninstall')}
                                         </button>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <div className={styles.emptyState}>No addons found.</div>
+                            <div className={styles.emptyState}>{t('addons.no_addons')}</div>
                         )}
                     </div>
                 </div>
@@ -147,7 +153,7 @@ const AddonsView = ({
                             <input 
                                 type="text" 
                                 className={styles.searchInput}
-                                placeholder="Search addons..." 
+                                placeholder={t('addons.search_placeholder')}
                                 value={addonSearch}
                                 onChange={(e) => setAddonSearch(e.target.value)}
                             />
@@ -157,16 +163,16 @@ const AddonsView = ({
                             value={addonSort}
                             onChange={(e) => setAddonSort(e.target.value)}
                         >
-                            <option value="popular">Popularity</option>
-                            <option value="newest">Recently Added</option>
-                            <option value="updated">Recently Updated</option>
-                            <option value="a-z">Name (A-Z)</option>
-                            <option value="z-a">Name (Z-A)</option>
+                            <option value="popular">{t('addons.sort.popularity')}</option>
+                            <option value="newest">{t('addons.sort.recently_added')}</option>
+                            <option value="updated">{t('addons.sort.recently_updated')}</option>
+                            <option value="a-z">{t('addons.sort.az')}</option>
+                            <option value="z-a">{t('addons.sort.za')}</option>
                         </select>
                     </div>
                     <div className={styles.addonsListContainer}>
                         {loadingAddons ? (
-                            <div className={styles.loadingState}>Loading addons...</div>
+                            <div className={styles.loadingState}>{t('addons.loading')}</div>
                         ) : (browseAddonsList || []).length > 0 ? (
                             (browseAddonsList || []).map((addon, idx) => (
                                 <div key={idx} className={styles.addonRow} onClick={() => openDetails(addon)}>
@@ -195,7 +201,7 @@ const AddonsView = ({
                                             e.stopPropagation();
                                             openDetails(addon);
                                         }}>
-                                            <Info size={14} /> Details
+                                            <Info size={14} /> {t('addons.details')}
                                         </button>
                                         {isAddonInstalled(addon) ? (
                                             <button 
@@ -203,7 +209,7 @@ const AddonsView = ({
                                                 disabled
                                             >
                                                 <Check size={14} />
-                                                Installed
+                                                {t('addons.already_installed')}
                                             </button>
                                         ) : (
                                             <button 
@@ -217,12 +223,12 @@ const AddonsView = ({
                                                 {installingAddon === addon.title ? (
                                                     <>
                                                         <Loader2 size={14} className={styles.spinIcon} />
-                                                        Installing...
+                                                        {t('addons.installing')}
                                                     </>
                                                 ) : (
                                                     <>
                                                         <Download size={14} />
-                                                        Install
+                                                        {t('addons.install')}
                                                     </>
                                                 )}
                                             </button>
@@ -233,8 +239,8 @@ const AddonsView = ({
                         ) : (
                             <div className={styles.emptyState}>
                                 {activeGame.id === 'tbc' && selectedVersion === '2.5.2' && !addonSearch ? 
-                                    'No addons available for 2.5.2 at the moment.' : 
-                                    (addonSearch ? `No addons found matching "${addonSearch}"` : 'No addons available.')
+                                    t('addons.no_addons_tbc') : 
+                                    (addonSearch ? t('addons.no_addons_search', { search: addonSearch }) : t('addons.no_addons_avail'))
                                 }
                             </div>
                         )}
@@ -281,7 +287,7 @@ const AddonsView = ({
 
                             {selectedAddon.modules && selectedAddon.modules.length > 0 && (
                                 <div className={styles.addonModalModules}>
-                                    <h4>Included Modules ({selectedAddon.modules.length})</h4>
+                                    <h4>{t('addons.included_modules', { count: selectedAddon.modules.length })}</h4>
                                     <div className={styles.modulesList}>
                                         {selectedAddon.modules.map((mod, i) => (
                                             <span key={i} className={styles.moduleTag}>{mod.title || mod.folderName}</span>
@@ -297,7 +303,7 @@ const AddonsView = ({
                                         handleDeleteAddon(toDelete);
                                         closeDetails();
                                     }}>
-                                        Uninstall Addon
+                                        {t('addons.uninstall_addon')}
                                     </button>
                                 ) : isAddonInstalled(selectedAddon) ? (
                                     <button 
@@ -306,7 +312,7 @@ const AddonsView = ({
                                         style={{padding: '8px 16px', fontSize: '13px'}}
                                     >
                                         <Check size={16} />
-                                        Already Installed
+                                        {t('addons.already_installed')}
                                     </button>
                                 ) : (
                                     <button 
@@ -323,12 +329,12 @@ const AddonsView = ({
                                         {installingAddon === selectedAddon.title ? (
                                             <>
                                                 <Loader2 size={16} className={styles.spinIcon} />
-                                                Installing...
+                                                {t('addons.installing')}
                                             </>
                                         ) : (
                                             <>
                                                 <Download size={16} />
-                                                Install Addon
+                                                {t('addons.install_addon')}
                                             </>
                                         )}
                                     </button>

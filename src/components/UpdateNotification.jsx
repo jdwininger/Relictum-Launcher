@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Download, RefreshCw, X, Check, AlertTriangle } from 'lucide-react';
 import ipcRenderer from '../utils/ipc';
 import './UpdateNotification.css'; // We'll create this CSS
 
 const UpdateNotification = () => {
+  const { t } = useTranslation();
   const [status, setStatus] = useState('idle'); // idle, checking, available, downloading, downloaded, error
   const [message, setMessage] = useState('');
   const [progress, setProgress] = useState(0);
@@ -50,13 +52,13 @@ const UpdateNotification = () => {
         case 'available':
           setStatus('available');
           setUpdateInfo(data);
-          setMessage(`New version ${data?.version} available!`);
+          setMessage(t('updater.available', { version: data?.version }));
           setIsVisible(true);
           playSoftNotificationSound();
           break;
         case 'not-available':
           setStatus('idle');
-          setMessage('No updates found (Checked Mirror).');
+          setMessage(t('updater.not_available'));
           setIsVisible(true);
           setTimeout(() => setIsVisible(false), 5000);
           break;
@@ -67,12 +69,12 @@ const UpdateNotification = () => {
           break;
         case 'downloaded':
           setStatus('downloaded');
-          setMessage('Update downloaded. Ready to install.');
+          setMessage(t('updater.downloaded'));
           setIsVisible(true);
           break;
         case 'error':
           setStatus('error');
-          setMessage('Update error: ' + text);
+          setMessage(t('updater.error', { error: text }));
           setIsVisible(true);
           break;
         default:
