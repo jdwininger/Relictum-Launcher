@@ -37,6 +37,14 @@ const Settings = ({
     setIsLanguageDropdownOpen(false);
   };
 
+  const languages = [
+    { code: 'en', label: 'settings.english', disabled: false },
+    { code: 'es', label: 'settings.spanish', disabled: true },
+    { code: 'ru', label: 'settings.russian', disabled: true },
+    { code: 'pt', label: 'settings.portuguese', disabled: true },
+    { code: 'de', label: 'settings.german', disabled: true },
+  ];
+
   return (
     <div className={styles.settingsView}>
       <h2>{t('settings.title')}</h2>
