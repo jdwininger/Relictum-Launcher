@@ -1,7 +1,7 @@
 {
   "name": "relictum-launcher",
   "private": true,
-  "version": "3.1.9",
+  "version": "3.3.0",
   "author": "Relictum",
   "description": "The ultimate, secure, and modern launcher for private servers.",
   "repository": {
