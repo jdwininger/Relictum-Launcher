@@ -242,7 +242,17 @@ ipcMain.on('launch-game', (event, gamePath) => {
   // Launch the game process
   // detached: true allows it to run independently
   // stdio: 'ignore' prevents hanging on output
-  const gameProcess = spawn(gamePath, [], { detached: true, stdio: 'ignore' });
+  let gameProcess;
+  
+  if (process.platform === 'linux') {
+      // Linux: Launch via Wine
+      // We assume 'wine' is available in the system PATH
+      console.log('Launching on Linux via Wine:', gamePath);
+      gameProcess = spawn('wine', [gamePath], { detached: true, stdio: 'ignore' });
+  } else {
+      // Windows: Direct launch
+      gameProcess = spawn(gamePath, [], { detached: true, stdio: 'ignore' });
+  }
   
   // Listen for the process exit to notify renderer
   gameProcess.on('close', (code) => {
@@ -460,13 +470,22 @@ ipcMain.on('download-update', async (event) => {
 
         const assets = Array.isArray(data.assets) ? data.assets : [];
         let installerAsset = null;
+        const isLinux = process.platform === 'linux';
+        const targetExt = isLinux ? '.appimage' : '.exe';
+
         for (const a of assets) {
             const name = (a.name || '').toLowerCase();
-            if (name.endsWith('.exe')) {
+            if (name.endsWith(targetExt)) {
                 if (!installerAsset) installerAsset = a;
-                if (name.includes('setup') || name.includes('installer')) {
-                    installerAsset = a;
-                    break;
+                
+                if (isLinux) {
+                    // On Linux, usually just one AppImage, but we take the first valid one
+                } else {
+                    // On Windows, prefer 'setup' or 'installer' over others
+                    if (name.includes('setup') || name.includes('installer')) {
+                        installerAsset = a;
+                        break;
+                    }
                 }
             }
         }
@@ -475,7 +494,7 @@ ipcMain.on('download-update', async (event) => {
             if (mainWindow) {
                 mainWindow.webContents.send('updater-message', {
                     type: 'error',
-                    text: 'No Windows installer asset found in latest release.',
+                    text: `No ${isLinux ? 'Linux' : 'Windows'} installer asset found in latest release.`,
                     data: null
                 });
             }
@@ -484,7 +503,7 @@ ipcMain.on('download-update', async (event) => {
 
         const downloadUrl = installerAsset.browser_download_url;
         const tempDir = app.getPath('temp');
-        const fileName = installerAsset.name || 'WarmaneLauncherSetup.exe';
+        const fileName = installerAsset.name || (isLinux ? 'RelictumLauncher.AppImage' : 'WarmaneLauncherSetup.exe');
         const outPath = path.join(tempDir, fileName);
 
         if (mainWindow) {
