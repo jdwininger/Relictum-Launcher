@@ -61,7 +61,7 @@ It is the first private server launcher to feature **Advanced Integrity Verifica
 ## 🚀 Getting Started
 
 ### For Users
-1.  Go to the [Releases](https://github.com/Litas-dev/Relictum-Launcher/releases) page.
+1.  Go to the [Releases](https://github.com/Litas-dev/Relictum-Launcher/releases/latest) page.
 2.  Download `Relictum.Launcher.Setup.exe`.
 3.  Run the installer. The launcher will automatically verify its own integrity on first launch.
 
