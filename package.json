@@ -1,7 +1,7 @@
 {
   "name": "relictum-launcher",
   "private": true,
-  "version": "3.3.0",
+  "version": "3.3.1",
   "author": "Relictum",
   "description": "The ultimate, secure, and modern launcher for private servers.",
   "repository": {
@@ -37,7 +37,7 @@
     "appId": "com.relictum.launcher",
     "productName": "Relictum Launcher",
     "directories": {
-      "output": "dist_v3.3.0_final"
+      "output": "dist_v3.3.1_final"
     },
     "files": [
       "dist-electron/**/*",

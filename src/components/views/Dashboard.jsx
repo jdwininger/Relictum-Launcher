@@ -5,6 +5,7 @@ import { games } from '../../config/games';
 import ipcRenderer from '../../utils/ipc';
 import { Users } from 'lucide-react';
 import titleImage from '../../assets/logo-new-white.png';
+import discordIcon from '../../assets/discord.png';
 
 const Dashboard = ({ games, onGameSelect }) => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ const Dashboard = ({ games, onGameSelect }) => {
   };
 
   const handleJoinCommunity = () => {
-    ipcRenderer.send('open-external', 'https://www.reddit.com/r/AzerothLegacy/');
+    ipcRenderer.send('open-external', 'https://discord.gg/ttnHHMnru2');
   };
 
   const classicIcon = getGameIcon('classic');
@@ -34,10 +35,20 @@ const Dashboard = ({ games, onGameSelect }) => {
           </Trans>
         </p>
 
-        <button className={styles.communityButton} onClick={handleJoinCommunity}>
-          <Users className={styles.communityIcon} size={24} />
-          <span className={styles.communityText}>{t('dashboard.join_community')}</span>
-        </button>
+        <div 
+          className={styles.discordIconContainer} 
+          onClick={handleJoinCommunity}
+          title={t('dashboard.join_community')}
+        >
+          <div className={styles.iconGlow} style={{ width: '100px', height: '100px' }}>
+            <img 
+              src={discordIcon} 
+              alt="Join Discord" 
+              className={styles.gameIcon} 
+              style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+            />
+          </div>
+        </div>
 
         <div className={styles.supportedGamesPreview}>
           <div 
