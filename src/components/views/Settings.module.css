@@ -255,6 +255,16 @@
   color: var(--primary-gold);
 }
 
+.languageOption.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.languageOption.disabled:hover {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
 .settingRow {
   display: flex;
   justify-content: space-between;

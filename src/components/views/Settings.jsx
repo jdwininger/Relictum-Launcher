@@ -63,14 +63,17 @@ const Settings = ({
 
             {isLanguageDropdownOpen && (
               <div className={styles.languageSelectorDropdown}>
-                <div 
-                  className={`${styles.languageOption} ${i18n.language === 'en' ? styles.selected : ''}`}
-                  onClick={() => changeLanguage('en')}
-                >
-                  <Globe size={14} />
-                  {t('settings.english')}
-                </div>
-                {/* Future languages can be added here */}
+                {languages.map((lang) => (
+                  <div 
+                    key={lang.code}
+                    className={`${styles.languageOption} ${i18n.language === lang.code ? styles.selected : ''} ${lang.disabled ? styles.disabled : ''}`}
+                    onClick={() => !lang.disabled && changeLanguage(lang.code)}
+                    title={lang.disabled ? "Coming Soon" : ""}
+                  >
+                    <Globe size={14} />
+                    {t(lang.label)}
+                  </div>
+                ))}
               </div>
             )}
           </div>
