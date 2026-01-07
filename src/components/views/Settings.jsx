@@ -28,8 +28,14 @@ const Settings = ({
   handleSetDefaultPath,
   handleClearDefaultPath
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setIsLanguageDropdownOpen(false);
+  };
 
   return (
     <div className={styles.settingsView}>
@@ -42,13 +48,32 @@ const Settings = ({
             <span className={styles.toggleTitle}>{t('settings.language')}</span>
             <span className={styles.toggleDesc}>{t('settings.language_desc')}</span>
           </div>
-          <button 
-            className={styles.cleanCacheBtn} 
-            style={{ opacity: 0.5, cursor: 'not-allowed', width: 'auto', minWidth: '100px', justifyContent: 'center' }}
-            title="Coming Soon"
-          >
-            <Globe size={14} /> {t('settings.english')}
-          </button>
+          
+          <div className={styles.languageSelectorContainer}>
+            <div 
+              className={styles.languageSelectorTrigger}
+              onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Globe size={14} />
+                <span>{i18n.language === 'en' ? t('settings.english') : 'English'}</span>
+              </div>
+              <ChevronDown size={14} />
+            </div>
+
+            {isLanguageDropdownOpen && (
+              <div className={styles.languageSelectorDropdown}>
+                <div 
+                  className={`${styles.languageOption} ${i18n.language === 'en' ? styles.selected : ''}`}
+                  onClick={() => changeLanguage('en')}
+                >
+                  <Globe size={14} />
+                  {t('settings.english')}
+                </div>
+                {/* Future languages can be added here */}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

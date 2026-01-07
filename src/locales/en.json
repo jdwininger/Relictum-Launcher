@@ -21,7 +21,7 @@
     "title": "Settings",
     "general": "General",
     "language": "Language",
-    "language_desc": "Select application language (Work in Progress).",
+    "language_desc": "Select application language.",
     "english": "English",
     "launcher_behavior": "Launcher Behavior",
     "auto_close": "Auto-close Launcher",
