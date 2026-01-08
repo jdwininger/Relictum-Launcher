@@ -1,6 +1,7 @@
 name: Build Linux Release
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
