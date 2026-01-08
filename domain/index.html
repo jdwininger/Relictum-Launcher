@@ -399,6 +399,17 @@
                         heroBtn.href = downloadUrl;
                         heroBtn.innerHTML = `<i data-lucide="monitor"></i> Download for Windows (${version})`;
                     }
+
+                    // Find Linux .AppImage asset
+                    const linuxAsset = data.assets.find(asset => asset.name.endsWith('.AppImage'));
+                    const linuxDownloadUrl = linuxAsset ? linuxAsset.browser_download_url : data.html_url;
+
+                    // Update Linux Button
+                    const linuxBtn = document.querySelector('.btn-linux');
+                    if (linuxBtn) {
+                        linuxBtn.href = linuxDownloadUrl;
+                        linuxBtn.innerHTML = `<i data-lucide="download"></i> Download for Linux (${version})`;
+                    }
                     
                     // Re-render icons after DOM updates
                     lucide.createIcons();
