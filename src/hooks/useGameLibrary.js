@@ -7,6 +7,7 @@ export const useGameLibrary = () => {
     const [gamePaths, setGamePaths] = useState({});
     const [visibleGameIds, setVisibleGameIds] = useState(games.map(g => g.id));
     const [isPlaying, setIsPlaying] = useState(false);
+    const [didLoadVisible, setDidLoadVisible] = useState(false);
 
     // Load visible games
     useEffect(() => {
@@ -21,12 +22,22 @@ export const useGameLibrary = () => {
         } catch (e) {
             console.error("Failed to load visible games settings:", e);
         }
+        setDidLoadVisible(true);
     }, []);
 
     // Save visible games
     useEffect(() => {
-        localStorage.setItem('relictum_visible_games', JSON.stringify(visibleGameIds));
-    }, [visibleGameIds]);
+        if (!didLoadVisible) return;
+        const json = JSON.stringify(visibleGameIds);
+        localStorage.setItem('relictum_visible_games', json);
+        localStorage.setItem('warmane_visible_games', json);
+        try {
+            ipcRenderer.invoke('settings-write-backup', {
+                relictum_visible_games: json,
+                warmane_visible_games: json
+            });
+        } catch (_) {}
+    }, [visibleGameIds, didLoadVisible]);
 
     // Load game paths
     useEffect(() => {

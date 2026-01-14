@@ -71,7 +71,7 @@ const Sidebar = ({
                 </button>
                 
                 <div className={styles.navLabel}>{t('sidebar.clients')}</div>
-                {allGames.filter(g => visibleGameIds.includes(g.id) || g.isCustom).map(game => (
+                {allGames.filter(g => visibleGameIds.includes(g.id)).map(game => (
                     <div 
                         key={game.id}
                         className={`${styles.navItem} ${activeView === 'game' && activeGameId === game.id ? styles.active : ''}`}

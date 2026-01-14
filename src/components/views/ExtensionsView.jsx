@@ -19,6 +19,14 @@ const ExtensionsView = () => {
     const [availableExtensions, setAvailableExtensions] = useState([]);
     const [extensionToDelete, setExtensionToDelete] = useState(null);
 
+    useEffect(() => {
+        const openBrowse = () => {
+            setActiveTab('browse');
+        };
+        window.addEventListener('extensions-open-browse', openBrowse);
+        return () => window.removeEventListener('extensions-open-browse', openBrowse);
+    }, []);
+
     
 
     // Remote Fetch

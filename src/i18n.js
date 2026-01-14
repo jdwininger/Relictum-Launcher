@@ -40,4 +40,9 @@ i18n
     }
   });
 
+// Expose globally so extensions can access translations
+if (typeof window !== 'undefined') {
+  try { window.i18n = i18n; } catch (_) {}
+}
+
 export default i18n;

@@ -430,6 +430,22 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const handleOpenAddonDetails = (e) => {
+      try {
+        const { addon, gameId } = e.detail || {};
+        if (gameId) {
+          gameLibrary.setActiveGameId(gameId);
+        }
+        setActiveView('addons');
+        addons.setActiveAddonTab('browse');
+        window.dispatchEvent(new CustomEvent('addons-open-details', { detail: { addon } }));
+      } catch (_) {}
+    };
+    window.addEventListener('open-addon-details', handleOpenAddonDetails);
+    return () => window.removeEventListener('open-addon-details', handleOpenAddonDetails);
+  }, [addons, gameLibrary]);
+
+  useEffect(() => {
     const updateContent = () => {
         if (activeView.startsWith('extension:')) {
             const pageId = activeView.split(':')[1];
@@ -450,6 +466,30 @@ function App() {
 
       {/* Main Layout */}
       {isSidebarVisible && (
+        (ExtensionStore.getSidebarOverride && ExtensionStore.getSidebarOverride()) ? (
+          (() => {
+            const CustomSidebar = ExtensionStore.getSidebarOverride();
+            return (
+              <CustomSidebar
+                activeView={activeView}
+                setActiveView={setActiveView}
+                activeGameId={gameLibrary.activeGameId}
+                setActiveGameId={gameLibrary.setActiveGameId}
+                visibleGameIds={gameLibrary.visibleGameIds}
+                onManageGames={toggleManageGames}
+                onOpenAddons={() => setActiveView('addons')}
+                integrityStatus={integrityStatus}
+                isMusicPlaying={isMusicPlaying}
+                enableGlowEffects={settings.enableGlowEffects}
+                onToggleMusic={toggleMusic}
+                appVersion={appVersion}
+                updateInfo={updateInfo}
+                customGameNames={customGameNames}
+                onRenameGame={handleOpenRename}
+              />
+            );
+          })()
+        ) : (
         <Sidebar 
           activeView={activeView}
           setActiveView={setActiveView}
@@ -466,7 +506,7 @@ function App() {
           updateInfo={updateInfo}
           customGameNames={customGameNames}
           onRenameGame={handleOpenRename}
-        />
+        />)
       )}
 
       <div className="main-content" style={!isSidebarVisible ? { width: '100%', left: 0 } : {}}>
@@ -482,26 +522,58 @@ function App() {
 
         <div className="content-area">
           {activeView === 'dashboard' && (
-            <Dashboard 
-              games={games}
-              activeGameId={gameLibrary.activeGameId}
-              setActiveGameId={gameLibrary.setActiveGameId}
-              visibleGameIds={gameLibrary.visibleGameIds}
-              gamePaths={gameLibrary.gamePaths}
-              onLaunchGame={gameLibrary.launchGame}
-              onLocateGame={gameLibrary.handleLocateGame}
-              onGameSelect={(id) => {
-                gameLibrary.setActiveGameId(id);
-                setActiveView('game');
-              }}
-              onDownloadGame={() => {
-                setActiveView('game');
-              }}
-              isPlaying={gameLibrary.isPlaying}
-              downloadState={downloader.downloadState}
-              settings={settings}
-              user={user}
-            />
+            ((ExtensionStore.getDashboardOverride && ExtensionStore.getDashboardOverride()) || (typeof window !== 'undefined' && window.RelictumDashboardOverride)) ? (
+              (() => {
+                const CustomDashboard = (ExtensionStore.getDashboardOverride && ExtensionStore.getDashboardOverride()) || (typeof window !== 'undefined' && window.RelictumDashboardOverride);
+                return (
+                  <CustomDashboard
+                    games={games}
+                    activeGameId={gameLibrary.activeGameId}
+                    setActiveGameId={gameLibrary.setActiveGameId}
+                    setActiveView={setActiveView}
+                    visibleGameIds={gameLibrary.visibleGameIds}
+                    gamePaths={gameLibrary.gamePaths}
+                    onLaunchGame={gameLibrary.launchGame}
+                    onLocateGame={gameLibrary.handleLocateGame}
+                    onGameSelect={(id) => {
+                      gameLibrary.setActiveGameId(id);
+                      setActiveView('game');
+                    }}
+                    onDownloadGame={() => {
+                      setActiveView('game');
+                    }}
+                    isPlaying={gameLibrary.isPlaying}
+                    downloadState={downloader.downloadState}
+                    settings={settings}
+                    user={user}
+                    appVersion={appVersion}
+                    updateInfo={updateInfo}
+                    serverPing={serverPing}
+                  />
+                );
+              })()
+            ) : (
+              <Dashboard 
+                games={games}
+                activeGameId={gameLibrary.activeGameId}
+                setActiveGameId={gameLibrary.setActiveGameId}
+                visibleGameIds={gameLibrary.visibleGameIds}
+                gamePaths={gameLibrary.gamePaths}
+                onLaunchGame={gameLibrary.launchGame}
+                onLocateGame={gameLibrary.handleLocateGame}
+                onGameSelect={(id) => {
+                  gameLibrary.setActiveGameId(id);
+                  setActiveView('game');
+                }}
+                onDownloadGame={() => {
+                  setActiveView('game');
+                }}
+                isPlaying={gameLibrary.isPlaying}
+                downloadState={downloader.downloadState}
+                settings={settings}
+                user={user}
+              />
+            )
           )}
 
           {activeView === 'game' && (

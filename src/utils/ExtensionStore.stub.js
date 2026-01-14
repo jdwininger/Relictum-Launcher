@@ -12,6 +12,8 @@ class ExtensionStore {
             system: []
         };
         this.sidebarVisible = true;
+        this.sidebarOverride = null;
+        this.dashboardOverride = null;
     }
 
     subscribe(listener) { 
@@ -34,6 +36,10 @@ class ExtensionStore {
     
     getSidebarVisible() { return this.sidebarVisible; }
     setSidebarVisible(visible) { this.sidebarVisible = visible; }
+    registerSidebar(component) { this.sidebarOverride = component; }
+    getSidebarOverride() { return this.sidebarOverride; }
+    registerDashboard(component) { this.dashboardOverride = component; }
+    getDashboardOverride() { return this.dashboardOverride; }
     
     getDefaultView() { return null; }
     getNavigationRequest() { return null; }

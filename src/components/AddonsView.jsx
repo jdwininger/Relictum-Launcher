@@ -25,6 +25,17 @@ const AddonsView = ({
     const [selectedAddon, setSelectedAddon] = useState(null);
     const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
+    React.useEffect(() => {
+        const handleExternalOpen = (e) => {
+            try {
+                const { addon } = e.detail || {};
+                if (addon) setSelectedAddon(addon);
+            } catch(_) {}
+        };
+        window.addEventListener('addons-open-details', handleExternalOpen);
+        return () => window.removeEventListener('addons-open-details', handleExternalOpen);
+    }, []);
+
     const sortOptions = [
         { value: 'popular', label: t('addons.sort_popular') || 'Most Popular' },
         { value: 'newest', label: t('addons.sort_recent') || 'Recently Added' }
